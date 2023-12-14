@@ -1,6 +1,6 @@
 {
-    "name": "aplikasi_wisata_gunung",
-    "short_name": "aplikasi_wisata_gunung",
+    "name": "aplikasi_wisatagunung",
+    "short_name": "aplikasi_wisatagunung",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
