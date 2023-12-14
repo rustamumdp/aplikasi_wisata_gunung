@@ -1,4 +1,4 @@
-# aplikasi_wisata_gunung
+# aplikasi_wisatagunung
 
 A new Flutter project.
 
