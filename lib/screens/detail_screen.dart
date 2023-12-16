@@ -48,14 +48,17 @@ class _DetailScreenState extends State<DetailScreen> {
             Stack(
               children:[
                 //image utama
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal :16),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image.asset('${widget.gunung.imageAsset}',
-                      width: double.infinity,
-                      height: 200,
-                      fit: BoxFit.cover,),
+                Hero(
+                  tag: widget.gunung.imageAsset,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal :16),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.asset('${widget.gunung.imageAsset}',
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,),
+                    ),
                   ),
                 ),
                 Padding(
@@ -63,7 +66,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.deepPurple[100]?.withOpacity(0.8),
+                      color: Colors.greenAccent[100]?.withOpacity(0.8),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
