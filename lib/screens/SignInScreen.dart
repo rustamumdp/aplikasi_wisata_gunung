@@ -67,6 +67,8 @@ class _SignInScreenState extends State<SignInScreen> {
         _isSignedIn = true;
         prefs.setBool('isSignedIn', true);
       });
+
+
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).popUntil((route) => route.isFirst);
       });

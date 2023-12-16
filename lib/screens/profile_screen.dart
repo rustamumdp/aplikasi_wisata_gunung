@@ -149,3 +149,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
+void signIn() {
+  Navigator.pushNamed(context, '/signin');
+}
