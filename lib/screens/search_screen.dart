@@ -30,7 +30,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.deepPurple[50],
+                color: Colors.white54,
               ),
               child: TextField(
                 controller: _searchController,
@@ -49,7 +49,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   prefixIcon: Icon(Icons.search),
                   border : InputBorder.none,
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color : Colors.deepPurple),
+                    borderSide: BorderSide(color : Colors.greenAccent),
                   ),
                   contentPadding: EdgeInsets.symmetric(
                       horizontal: 16,
