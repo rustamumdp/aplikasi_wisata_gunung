@@ -1,44 +1,99 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aplikasi_wisata_gunung/screens/SignUpScreen.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class SignInScreen extends StatefulWidget {
-  SignInScreen({super.key});
+  SignInScreen({Key? key}) : super(key: key); // Perbaikan di sini
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  //TODO :1. DEKLARASIKAN VARIABEL
   final TextEditingController _usernameController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
   String _errorText = '';
-
   bool _isSignedIn = false;
-
   bool _obscurePassword = true;
+
+  Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(
+      SharedPreferences sharedPreferences,
+      ) async {
+    final encryptedUsername = sharedPreferences.getString('username') ?? '';
+    final encryptedPassword = sharedPreferences.getString('password') ?? '';
+    final keyString = sharedPreferences.getString('key') ?? '';
+    final ivString = sharedPreferences.getString('iv') ?? '';
+
+    final encrypt.Key key = encrypt.Key.fromBase64(keyString);
+    final encrypt.IV iv = encrypt.IV.fromBase64(ivString); // Corrected here
+
+    final encrypter = encrypt.Encrypter(encrypt.AES(key)); // Corrected here
+    final decryptedUsername = encrypter.decrypt64(encryptedUsername);
+    final decryptedPassword = encrypter.decrypt64(encryptedPassword);
+    print('decryptedUsername1 : $decryptedUsername');
+    print('decryptedPassword1 : $decryptedPassword');
+
+    return {'username': decryptedUsername, 'password': decryptedPassword};
+  }
+
+
+  void signIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String savedUsername = prefs.getString('username') ?? '';
+    String savedPassword = prefs.getString('password') ?? '';
+    String enteredUsername = _usernameController.text.trim();
+    String enteredPassword = _passwordController.text.trim();
+
+    if (enteredUsername.isEmpty || enteredPassword.isEmpty) {
+      setState(() {
+        _errorText = 'Nama Pengguna dan kata sandi harus diisi.';
+      });
+      return;
+    }
+    if (savedUsername.isEmpty || savedPassword.isEmpty) {
+      setState(() {
+        _errorText =
+        ' Pengguna belum terdaftar. silahkan daftar terlebih dahulu.';
+      });
+      return;
+    }
+    if (enteredUsername == savedUsername && enteredPassword == savedPassword) { // Perbaikan di sini
+      setState(() {
+        _errorText = '';
+        _isSignedIn = true;
+        prefs.setBool('isSignedIn', true);
+      });
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      });
+      WidgetsBinding.instance!.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/');
+      });
+    } else {
+      setState(() {
+        _errorText = 'Nama pengguna atau kata sandi salah.';
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //TODO: 2.Pasang AppBar
       appBar: AppBar(
         title: Text('Sign In'),
       ),
-      //TOOD: 3. Pasang body
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Form(
-                child: Column(
-              //TODO: 4. ATUR mainAxisAlignment dan crossAxisAligment
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // TODO: 5. Pasang TextFormField Nama Pengguna
                 TextFormField(
                   controller: _usernameController,
                   decoration: InputDecoration(
@@ -46,10 +101,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                // TODO: 6. Pasang TextFormField Kata Sandi
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
@@ -71,37 +123,33 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   obscureText: _obscurePassword,
                 ),
-
-                // TODO: 7. Pasang ElevatedButton Sign In
-                SizedBox(
-                  height: 20,
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: signIn, // Perbaikan di sini
+                  child: Text('Sign In'),
                 ),
-                ElevatedButton(onPressed: () {}, child: Text('Sign In')),
-                // TODO: 8. Pasang TextButton Sign Up
-                SizedBox(
-                  height: 10,
-                ),
-                // TextButton(
-                //     onPressed:(){},
-                //     child: Text('Belum punya akun? Daftar di sini')),
+                SizedBox(height: 10),
                 RichText(
-                  text: TextSpan(
-                    text: 'Belum punya akun?',
-                    style: TextStyle(fontSize: 16, color: Colors.blueGrey),
-                    children: <TextSpan>[
-                      TextSpan(
-                        text: 'Daftar di sini.',
-                        style: TextStyle(
-                            color: Colors.lightBlue,
+                    text: TextSpan(
+                      text: 'Belum punya akun?',
+                      style: TextStyle(fontSize: 16, color: Colors.deepPurple),
+                      children: <TextSpan>[
+                        TextSpan(
+                          text: 'Daftar di sini.',
+                          style: TextStyle(
+                            color: Colors.blue,
                             decoration: TextDecoration.underline,
-                            fontSize: 16),
-                        recognizer: TapGestureRecognizer()..onTap = () {},
-                      ),
-                    ],
-                  ),
-                ),
+                            fontSize: 16,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushNamed(context, '/signup');
+                            },
+                        )
+                      ],
+                    ))
               ],
-            )),
+            ),
           ),
         ),
       ),

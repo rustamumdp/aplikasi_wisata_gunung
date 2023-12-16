@@ -1,21 +1,23 @@
 class Gunung {
-  final String nama;
-  final String lokasi;
-  final String deskripsi;
-  final int ketinggian;
-  final String tipe;
-  final String fotoAsset;
-  final List<String> fotoUrls;
-  bool favorit;
+  final String name;
+  final String location;
+  final String description;
+  final String height;
+  final String type;
+  final String imageAsset;
+  final List<String> imageUrls;
+  bool isFavorite;
 
   Gunung({
-    required this.nama,
-    required this.lokasi,
-    required this.deskripsi,
-    required this.ketinggian,
-    required this.tipe,
-    required this.fotoAsset,
-    required this.fotoUrls,
-    this.favorit = false,
+    required this.name,
+    required this.location,
+    required this.description,
+    required this.height,
+    required this.type,
+    required this.imageAsset,
+    required this.imageUrls,
+    this.isFavorite = false,
   });
+
 }
+
