@@ -1,11 +1,42 @@
-import 'package:flutter/material.dart';
-import 'package:aplikasi_wisatagunung/models/gunung.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aplikasi_wisata_gunung/models/gunung.dart';
 
-class DetailScreen extends StatelessWidget {
+import '';
+class  DetailScreen extends StatefulWidget {
   final Gunung gunung;
 
-  DetailScreen({Key? key, required this.gunung}) : super(key: key);
+  DetailScreen ({super.key, required this.gunung});
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  bool isFavorite = false;
+  bool isSignedIn = false;
+
+  Future<void> _toggleFavorite() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // memeriksa apakah pengguna sudah sign in
+    if (!isSignedIn) {
+      // jika belum sign in, arahkan ke halaman sign in
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/signin');
+      });
+      return;
+    }
+    bool favoriteStatus = !isFavorite;
+    prefs.setBool('favorite_${widget.gunung.name}', favoriteStatus);
+
+    setState(() {
+      isFavorite = favoriteStatus;
+    });
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -13,117 +44,157 @@ class DetailScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Detail Header
+            //detailheader
             Stack(
-              children: [
-                Image.asset(gunung.fotoAsset),
+              children:[
+                //image utama
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal :16),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.asset('${widget.gunung.imageAsset}',
+                      width: double.infinity,
+                      height: 200,
+                      fit: BoxFit.cover,),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.deepPurple[100]?.withOpacity(0.8),
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back,
+                        )
+
+                    ),
+                  ),
+
+                ),
+
+
               ],
             ),
-
-            // Detail Info
+            //detailinfo
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Info Atas (nama gunung dan tombol favorit)
+                  SizedBox(height: 16,),
+                  //info atas
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        gunung.nama,
-                        style: const TextStyle(
+                        widget.gunung.name,
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite_border),
-                      )
-                    ],
-                  ),
-
-                  // Info Tengah (lokasi, ketinggian, dan tipe)
-                  const SizedBox(height: 16,),
-                  Row(
-                    children: [
-                      const Icon(Icons.place, color: Colors.red,),
-                      const SizedBox(width: 8,),
-                      const SizedBox(
-                        width: 70,
-                        child: Text('Lokasi', style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
+                        onPressed: (){
+                          _toggleFavorite();
+                        },
+                        icon: Icon(isSignedIn && isFavorite
+                            ? Icons.favorite
+                            :Icons.favorite_border,
+                          color: isSignedIn && isFavorite ? Colors.red : null,),
                       ),
-                      Text(': ${gunung.lokasi}'),
                     ],
                   ),
-                  Row(
-                    children: [
-                      const Icon(Icons.height, color: Colors.red,),
-                      const SizedBox(width: 8,),
-                      const SizedBox(
-                        width: 70,
-                        child: Text('Ketinggian', style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      Text(': ${gunung.ketinggian} meter'),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Icon(Icons.category, color: Colors.red,),
-                      const SizedBox(width: 8,),
-                      const SizedBox(
-                        width: 70,
-                        child: Text('Tipe', style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),),
-                      ),
-                      Text(': ${gunung.tipe}'),
-                    ],
-                  ),
-                  const SizedBox(height: 16,),
+                  //info tegah
+                  SizedBox(height: 16,),
+                  Row(children: [
+                    Icon(Icons.place, color: Colors.orange,),
+                    SizedBox(width: 8,),
+                    SizedBox(width: 75,
+                      child: Text('Letak', style: TextStyle(
+                          fontWeight: FontWeight.bold),),),
+                    Text(': ${widget.gunung.location}',),
+                  ],),
+                  Row(children: [
+                    Icon(Icons.arrow_upward, color: Colors.blue,),
+                    SizedBox(width: 8,),
+                    SizedBox(width: 75,
+                      child: Text('Ketinggian', style: TextStyle(
+                          fontWeight: FontWeight.bold),),),
+                    Text(': ${widget.gunung.height}'),
+                  ],),
+                  Row(children: [
+                    Icon(Icons.landscape, color: Colors.green,),
+                    SizedBox(width: 8,),
+                    SizedBox(width: 75,
+                      child: Text('Jenis', style: TextStyle(
+                        fontWeight: FontWeight.bold,),),),
+                    Text(': ${widget.gunung.type}'),
+                  ],),
+                  SizedBox(height: 16,),
                   Divider(color: Colors.deepPurple.shade100,),
-                  const SizedBox(height: 16,),
+                  SizedBox(height: 5,),
+                  //info bawah
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Text(
+                        'Deskripsi', style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16,),
+                  Container(
+                    height: 200,  // Ubah tinggi container sesuai kebutuhan Anda
+                    child: SingleChildScrollView(  // Widget untuk memungkinkan scrolling
+                      child: Text(
+                        widget.gunung.description,
+                        style: TextStyle(
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-
-            // Detail Gallery
+            //detail gallery
             Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Divider(color: Colors.deepPurple.shade100,),
-                  const Text("Galeri", style: TextStyle(
+                  Text('Galeri', style: TextStyle(
                     fontSize: 16, fontWeight: FontWeight.bold,
                   ),),
-                  const SizedBox(height: 10,),
+                  SizedBox(height: 10,),
                   SizedBox(
                     height: 100,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: gunung.fotoUrls.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 8),
+                      itemCount: widget.gunung.imageUrls.length,
+                      itemBuilder: (context, index){
+                        return Padding
+                          (padding: EdgeInsets.only(right: 8),
                           child: GestureDetector(
                             onTap: () {},
                             child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.deepPurple.shade100,
-                                  width: 2,
-                                ),
-                              ),
+                              decoration: BoxDecoration(),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: CachedNetworkImage(
-                                  imageUrl: gunung.fotoUrls[index],
+                                  imageUrl: widget.gunung.imageUrls[index],
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
@@ -141,8 +212,8 @@ class DetailScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 4,),
-                  const Text("Tap untuk memperbesar", style: TextStyle(
+                  SizedBox(height: 4,),
+                  Text('Slide', style: TextStyle(
                     fontSize: 12, color: Colors.black54,
                   ),),
                 ],
