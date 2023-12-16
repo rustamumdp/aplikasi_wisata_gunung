@@ -13,7 +13,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isSignedIn = false;
   String fullName = '';
   String userName = '';
-  int favoriteCandiCount = 0;
+  int favoriteGunungCount = 0;
 
   // TODO: 5. Implementasi fungsi signIn
   void signIn () {
@@ -126,8 +126,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),),
                     Expanded(
-                      child: favoriteCandiCount > 0
-                          ? Text(': $favoriteCandiCount', style: const TextStyle(fontSize: 18),)
+                      child: favoriteGunungCount > 0
+                          ? Text(': $favoriteGunungCount', style: const TextStyle(fontSize: 18),)
                           : const Text(':', style: TextStyle(fontSize: 18),),),
                   ],
                 ),

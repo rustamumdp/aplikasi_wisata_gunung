@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/' : (context) => MainScreen(),
-        // '/detail' : (context) => DetailScreen(candi: candi),
+        // '/detail' : (context) => DetailScreen(gunung: gunung),
         '/signin' : (context) => SignInScreen(),
         '/signup' : (context) => SignUpScreen(),
       },
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home : ProfilScreen(),
-      // home: DetailScreen(candi: candiList[0]),
+      // home: DetailScreen(gunung: gunungList[0]),
       // home: SignUpScreen(),
       // home : SearchScreen(),
       // home: HomeScreen(),

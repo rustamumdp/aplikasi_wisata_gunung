@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO : 1. Buat appBar dengan judul wisata candi
+      // TODO : 1. Buat appBar dengan judul wisata gunung
       appBar: AppBar(title: Text('Gunung Indonesia'),),
       // TODO : 2. Body dengan gridview.builder
       body: GridView.builder(
