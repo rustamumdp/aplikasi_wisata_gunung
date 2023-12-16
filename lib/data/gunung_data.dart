@@ -1,5 +1,7 @@
 import 'package:aplikasi_wisatagunung/models/gunung.dart';
 
+import '../models/gunung.dart';
+
 var gunungList = [
   Gunung(
     nama: 'Gunung Rinjani',
@@ -10,10 +12,10 @@ var gunungList = [
     tipe: 'Stratovolcano',
     fotoAsset: 'images/rinjani.jpeg',
     fotoUrls: [
-      'https://upload.wikimedia.org/wikipedia/commons/6/66/Rinjani_%26_Segara_Anak.jpg',
-      'https://www.travellingyuk.com/wp-content/uploads/2020/04/gunung-rinjani-1-1024x683.jpg',
-      'https://www.gotravelly.com/blog/wp-content/uploads/2018/01/gunung-rinjani-1-1024x681.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Rinjani_view.jpg/1200px-Rinjani_view.jpg',
+      'https://www.trekkingrinjani.com/mendakigunungrinjani/images/puncak-gunung-rinjani6.jpg'
+      'https://asset.kompas.com/crops/WYcYPfavcrfsNzSm6bXugeuKloA=/0x0:740x493/750x500/data/photo/2021/03/27/605e9f16e805f.jpg',
+      'https://cdn0-production-images-kly.akamaized.net/SThgojesidJM61qgD4ByaeUK7gk=/0x0:960x541/1200x675/filters:quality(75):strip_icc():format(jpeg)/kly-media-production/medias/2856425/original/065394900_1563418788-rinjani.jpg',
+      'https://mmc.tirto.id/image/otf/500x0/2018/08/07/gunung-rinjani-istock_ratio-16x9.jpg',
     ],
     favorit: false,
   ),
@@ -26,10 +28,10 @@ var gunungList = [
     tipe: 'Stratovolcano',
     fotoAsset: 'images/semeru.jpeg',
     fotoUrls: [
-      'https://www.gotravelly.com/blog/wp-content/uploads/2018/01/gunung-semeru-1-1024x683.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Mount_Semeru.jpg/1200px-Mount_Semeru.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/9/98/Mount_Semeru_and_Ranu_Kumbolo.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Ranu_Kumbolo_and_Mount_Semeru.jpg/1200px-Ranu_Kumbolo_and_Mount_Semeru.jpg',
+      'https://akcdn.detik.net.id/visual/2021/12/09/gunung-semeru-2_43.jpeg?w=720&q=90',
+      'https://cdn1-production-images-kly.akamaized.net/us6h7sVXjf92bsUxY42D1cl5hBo=/0x255:5377x3286/800x450/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/3656233/original/088747900_1638941693-000_9U86NL.jpg',
+      'https://komitmeniklim.id/wp-content/uploads/2022/01/semeru21.jpg',
+      'https://img.okezone.com/content/2022/12/13/337/2726585/gunung-semeru-terpantau-alami-penggembungan-ini-penyebabnya-VMcU3vUjKy.jpg',
     ],
     favorit: false,
   ),
@@ -42,12 +44,28 @@ var gunungList = [
     tipe: 'Stratovolcano',
     fotoAsset: 'images/kerinci.jpeg',
     fotoUrls: [
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Kerinci_summit_crater_lake.jpg/1200px-Kerinci_summit_crater_lake.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Kerinci_01.jpg/1200px-Kerinci_01.jpg',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Mount_Kerinci_2009.JPG/1200px-Mount_Kerinci_2009.JPG',
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Mount_Kerinci_summit_crater_lake.jpg/1200px-Mount_Kerinci_summit_crater_lake.jpg',
+      'https://awsimages.detik.net.id/community/media/visual/2023/06/10/puncak-indrapura-gunung-kerinci-1_169.jpeg?w=1200',
+      'https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/13/2023/04/30/IMG-20230430-WA0031-1070247256.jpg',
+      'https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2023/08/08/gunung-kerinci-1379339471.jpg',
+      'https://asset.kompas.com/crops/IM-dEVj1p1W7JDSPG2dO_7fOTa8=/0x0:800x533/750x500/data/photo/2022/08/04/62eb270149f0c.jpg',
     ],
     favorit: false,
   ),
-  // Tambahkan gunung-guung lainnya sesuai kebutuhan.
+  Gunung(
+    nama: 'Gunung Bromo',
+    lokasi: 'Jawa Timur',
+    deskripsi:
+    'Gunung Bromo atau dalam bahasa Tengger dieja "Brama", juga disebut Kaldera Tengger, adalah sebuah gunung berapi aktif di Jawa Timur, Indonesia.',
+    ketinggian: 2329,
+    tipe: 'Kaldera',
+    fotoAsset: 'images/',
+    fotoUrls: [
+      'https://awsimages.detik.net.id/community/media/visual/2023/06/10/puncak-indrapura-gunung-kerinci-1_169.jpeg?w=1200',
+      'https://static.promediateknologi.id/crop/0x0:0x0/0x0/webp/photo/p2/13/2023/04/30/IMG-20230430-WA0031-1070247256.jpg',
+      'https://static.promediateknologi.id/crop/0x0:0x0/750x500/webp/photo/2023/08/08/gunung-kerinci-1379339471.jpg',
+      'https://asset.kompas.com/crops/IM-dEVj1p1W7JDSPG2dO_7fOTa8=/0x0:800x533/750x500/data/photo/2022/08/04/62eb270149f0c.jpg',
+    ],
+    favorit: false,
+  ),
+
 ];
