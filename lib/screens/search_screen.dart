@@ -33,6 +33,16 @@ class _SearchScreenState extends State<SearchScreen> {
                 color: Colors.deepPurple[50],
               ),
               child: TextField(
+                controller: _searchController,
+                onChanged: (query) {
+                  setState(() {
+                    _searchQuery = query;
+                    _filteredGunung = gunungList
+                        .where((gunung) =>
+                            gunung.name.toLowerCase().contains(query.toLowerCase()))
+                        .toList();
+                  });
+                },
                 autofocus: false,
                 decoration: InputDecoration(
                   hintText: 'Cari Candi...',
