@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aplikasi_wisata_gunung/screens/SignUpScreen.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:aplikasi_wisata_gunung/screens/profile_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   SignInScreen({Key? key}) : super(key: key); // Perbaikan di sini
