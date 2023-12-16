@@ -19,8 +19,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // TODO : 2. Buat appBar dengal judul pencarian candi
-      appBar: AppBar(title: Text('Pencarian Candi'),),
+      // TODO : 2. Buat appBar dengal judul pencarian gunung
+      appBar: AppBar(title: Text('Pencarian Gunung'),),
       // TODO : 3. Buat body berupa column
       body: Column(
         children: [
@@ -35,7 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: TextField(
                 autofocus: false,
                 decoration: InputDecoration(
-                  hintText: 'Cari Candi...',
+                  hintText: 'Cari Gunung...',
                   prefixIcon: Icon(Icons.search),
                   border : InputBorder.none,
                   focusedBorder: OutlineInputBorder(
@@ -53,7 +53,7 @@ class _SearchScreenState extends State<SearchScreen> {
             child: ListView.builder(
               itemCount: _filteredGunung.length,
               itemBuilder: (context, index){
-                final candi = _filteredGunung[index];
+                final gunung = _filteredGunung[index];
                 return Card(
                   margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Row(
@@ -65,16 +65,16 @@ class _SearchScreenState extends State<SearchScreen> {
                         height: 100,
                         child: ClipRRect(
                             borderRadius : BorderRadius.circular(10),
-                            child: Image.asset(candi.imageAsset, fit: BoxFit.cover,)),
+                            child: Image.asset(gunung.imageAsset, fit: BoxFit.cover,)),
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(candi.name, style: TextStyle(
+                          Text(gunung.name, style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold,
                           ),),
                           SizedBox(height : 4),
-                          Text(candi.location),
+                          Text(gunung.location),
                         ],
                       ),
                     ],

@@ -63,7 +63,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.deepPurple[100]?.withOpacity(0.8),
+                      color: Colors.greenAccent[100]?.withOpacity(0.8),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
