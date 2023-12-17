@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aplikasi_wisata_gunung/screens/SignInScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,27 +17,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userName = '';
   int favoriteGunungCount = 0;
 
-  // // TODO: 5. Implementasi fungsi signIn
-  //  void signIn () {
-  //   // Navigator.pushNamed(context, '/sign_in');
-  //   // setState(() {
-  //   //   isSignedIn = !isSignedIn;
-  //   // });
-  //   Navigator.pushNamed(context, '/sign_in');
-  // }
-    //
-    void signIn() async {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
-      );
+  @override
+  void initState() {
+    super.initState();
+    // Mengambil dan menetapkan data pengguna saat layar pertama kali diinisialisasi
+    retrieveUserData();
+  }
+
+  void retrieveUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Periksa apakah pengguna sudah masuk
+    bool signedIn = prefs.getBool('isSignedIn') ?? false;
+
+    setState(() {
+      isSignedIn = signedIn;
+    });
+
+    if (signedIn) {
+      // Mengambil dan mendekripsi data pengguna
+      String encryptedFullName = prefs.getString('fullname') ?? '';
+      String encryptedUserName = prefs.getString('username') ?? '';
+
+      String keyString = prefs.getString('key') ?? '';
+      String ivString = prefs.getString('iv') ?? '';
+
+      encrypt.Key key = encrypt.Key.fromBase64(keyString);
+      encrypt.IV iv = encrypt.IV.fromBase64(ivString);
+
+      encrypt.Encrypter encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+      // Mendekripsi dan menetapkan data pengguna
+      String decryptedFullName = encrypter.decrypt64(encryptedFullName, iv: iv);
+      String decryptedUserName = encrypter.decrypt64(encryptedUserName, iv: iv);
+
+      setState(() {
+        fullName = decryptedFullName;
+        userName = decryptedUserName;
+      });
+
+      // Anda perlu mengimplementasikan logika untuk mengambil dan menetapkan favoriteGunungCount
+      // Ini dapat berdasarkan data favorit pengguna yang disimpan selama penggunaan aplikasi.
     }
+  }
 
+  void signIn() async {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignInScreen()),
+    );
+  }
 
-  // TODO: 6. Implementasi fungsi signOut
-  void signOut () {
+  void signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    // Menghapus data pengguna saat keluar
+    prefs.clear();
     setState(() {
       isSignedIn = false;
+      fullName = '';
+      userName = '';
+      favoriteGunungCount = 0;
     });
   }
 
