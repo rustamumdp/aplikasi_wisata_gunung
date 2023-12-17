@@ -22,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscurePassword = true;
 
   // TODO: 1. Membuat metode sign up
-  void _signUp() async{
+  void _signUp() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String name = _fullnameController.text.trim();
     final String username = _usernameController.text.trim();
@@ -32,14 +32,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         !password.contains(RegExp(r'[A-Z]')) ||
         !password.contains(RegExp(r'[a-z]')) ||
         !password.contains(RegExp(r'[0-9]')) ||
-        !password.contains(RegExp(r'[A-Z]')) ||
         !password.contains(RegExp(r'[!@#$%^&*(),.?":{}<>]'))) {
       setState(() {
-        _errorText = 'Minimal 8 karakter,kombinasi [A-Z], [a-z], [0-9], [!@#\\\$%^&*(),.?":{}<>]';
+        _errorText = 'Minimal 8 karakter, kombinasi [A-Z], [a-z], [0-9], [!@#\$%^&*(),.?":{}<>]';
       });
       return;
-    };
-    if(name.isNotEmpty && username.isNotEmpty && password.isNotEmpty){
+    }
+
+    if (name.isNotEmpty && username.isNotEmpty && password.isNotEmpty) {
       final encrypt.Key key = encrypt.Key.fromLength(32);
       final iv = encrypt.IV.fromLength(16);
 
@@ -48,22 +48,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
       final encryptedUsername = encrypter.encrypt(username, iv: iv);
       final encryptedPassword = encrypter.encrypt(password, iv: iv);
 
-      prefs.setString('fulname',encryptedName.base64);
-      prefs.setString('username',encryptedUsername.base64);
-      prefs.setString('password',encryptedPassword.base64);
-      prefs.setString('key',key.base64);
-      prefs.setString('iv',iv.base64);
-
+      prefs.setString('fullname', encryptedName.base64);
+      prefs.setString('username', encryptedUsername.base64);
+      prefs.setString('password', encryptedPassword.base64);
+      prefs.setString('key', key.base64);
+      prefs.setString('iv', iv.base64);
     }
 
-
-    // print('*** Sign up berhasil!');
-    // print('fullname : $name');
-    // print('username : $username');
-    // print('password : $password');
+    print('*** Sign up berhasil!');
+    print('fullname : $name');
+    print('username : $username');
+    print('password : $password');
 
     Navigator.pushReplacementNamed(context, '/signin');
   }
+
 
 
   // TODO : 2. Membuat metode dispose

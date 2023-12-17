@@ -24,17 +24,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   //   Navigator.pushNamed(context, '/sign_in');
   // }
     //
-    void signIn() {
+    void signIn() async {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => SignInScreen()),
       );
     }
 
+
   // TODO: 6. Implementasi fungsi signOut
   void signOut () {
     setState(() {
-      isSignedIn = !isSignedIn;
+      isSignedIn = false;
     });
   }
 

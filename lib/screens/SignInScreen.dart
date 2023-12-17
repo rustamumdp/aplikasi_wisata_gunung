@@ -20,55 +20,45 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _isSignedIn = false;
   bool _obscurePassword = true;
 
-  Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs(
-      SharedPreferences sharedPreferences,
-      ) async {
-    final encryptedUsername = sharedPreferences.getString('username') ?? '';
-    final encryptedPassword = sharedPreferences.getString('password') ?? '';
-    final keyString = sharedPreferences.getString('key') ?? '';
-    final ivString = sharedPreferences.getString('iv') ?? '';
+  Future<Map<String, String>> _retrieveAndDecryptDataFromPrefs() async {
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    final String encryptedUsername = sharedPreferences.getString('username') ?? '';
+    final String encryptedPassword = sharedPreferences.getString('password') ?? '';
+    final String keyString = sharedPreferences.getString('key') ?? '';
+    final String ivString = sharedPreferences.getString('iv') ?? '';
 
     final encrypt.Key key = encrypt.Key.fromBase64(keyString);
-    final encrypt.IV iv = encrypt.IV.fromBase64(ivString); // Corrected here
+    final encrypt.IV iv = encrypt.IV.fromBase64(ivString);
 
-    final encrypter = encrypt.Encrypter(encrypt.AES(key)); // Corrected here
-    final decryptedUsername = encrypter.decrypt64(encryptedUsername);
-    final decryptedPassword = encrypter.decrypt64(encryptedPassword);
-    print('decryptedUsername1 : $decryptedUsername');
-    print('decryptedPassword1 : $decryptedPassword');
+    final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+    final decryptedUsername = encrypter.decrypt64(encryptedUsername, iv: iv);
+    final decryptedPassword = encrypter.decrypt64(encryptedPassword, iv: iv);
+
+    print('decryptedUsername: $decryptedUsername');
+    print('decryptedPassword: $decryptedPassword');
 
     return {'username': decryptedUsername, 'password': decryptedPassword};
   }
 
 
+
   void signIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String savedUsername = prefs.getString('username') ?? '';
-    String savedPassword = prefs.getString('password') ?? '';
+    Map<String, String> decryptedData = await _retrieveAndDecryptDataFromPrefs();
+
+    String savedUsername = decryptedData['username'] ?? '';
+    String savedPassword = decryptedData['password'] ?? '';
     String enteredUsername = _usernameController.text.trim();
     String enteredPassword = _passwordController.text.trim();
 
-    if (enteredUsername.isEmpty || enteredPassword.isEmpty) {
-      setState(() {
-        _errorText = 'Nama Pengguna dan kata sandi harus diisi.';
-      });
-      return;
-    }
-    if (savedUsername.isEmpty || savedPassword.isEmpty) {
-      setState(() {
-        _errorText =
-        ' Pengguna belum terdaftar. silahkan daftar terlebih dahulu.';
-      });
-      return;
-    }
-    if (enteredUsername == savedUsername && enteredPassword == savedPassword) { // Perbaikan di sini
+    if (enteredUsername == savedUsername && enteredPassword == savedPassword) {
       setState(() {
         _errorText = '';
         _isSignedIn = true;
         prefs.setBool('isSignedIn', true);
       });
-
 
       WidgetsBinding.instance!.addPostFrameCallback((_) {
         Navigator.of(context).popUntil((route) => route.isFirst);
@@ -82,6 +72,7 @@ class _SignInScreenState extends State<SignInScreen> {
       });
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
