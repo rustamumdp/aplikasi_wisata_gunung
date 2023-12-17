@@ -17,6 +17,32 @@ class _DetailScreenState extends State<DetailScreen> {
   bool isFavorite = false;
   bool isSignedIn = false;
 
+  @override
+  void initState() {
+    super.initState();
+    // Memeriksa status sign-in dan daftar gunung favorit saat inisialisasi
+    checkSignInStatus();
+    loadFavoriteMountains();
+  }
+
+  Future<void> checkSignInStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool signedIn = prefs.getBool('isSignedIn') ?? false;
+
+    setState(() {
+      isSignedIn = signedIn;
+    });
+  }
+
+  Future<void> loadFavoriteMountains() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool favoriteStatus = prefs.getBool('favorite_${widget.gunung.name}') ?? false;
+
+    setState(() {
+      isFavorite = favoriteStatus;
+    });
+  }
+
   Future<void> _toggleFavorite() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     // memeriksa apakah pengguna sudah sign in
@@ -27,8 +53,29 @@ class _DetailScreenState extends State<DetailScreen> {
       });
       return;
     }
+    // bool favoriteStatus = !isFavorite;
+    // prefs.setBool('favorite_${widget.gunung.name}', favoriteStatus);
+    //
+    // setState(() {
+    //   isFavorite = favoriteStatus;
+    // });
+
+    // Mengambil daftar gunung favorit dari SharedPreferences
+    List<String>? favoriteMountainNames =
+        prefs.getStringList('favoriteMountainNames') ?? [];
+
     bool favoriteStatus = !isFavorite;
-    prefs.setBool('favorite_${widget.gunung.name}', favoriteStatus);
+
+    if (favoriteStatus) {
+      // Jika gunung ditambahkan ke favorit, tambahkan ke daftar
+      favoriteMountainNames.add(widget.gunung.name);
+    } else {
+      // Jika gunung dihapus dari favorit, hapus dari daftar
+      favoriteMountainNames.remove(widget.gunung.name);
+    }
+
+    // Simpan daftar gunung favorit ke SharedPreferences
+    prefs.setStringList('favoriteMountainNames', favoriteMountainNames);
 
     setState(() {
       isFavorite = favoriteStatus;
