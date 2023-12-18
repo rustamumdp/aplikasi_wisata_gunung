@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aplikasi_wisata_gunung/models/gunung.dart';
 
-import '';
+
 class  DetailScreen extends StatefulWidget {
   final Gunung gunung;
 

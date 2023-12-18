@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:aplikasi_wisata_gunung/screens/SignInScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:image_picker/image_picker.dart';
+
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,6 +18,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String fullName = '';
   String userName = '';
   int favoriteGunungCount = 0;
+
+  Future<void> _pickImage() async {
+    final ImagePicker _picker = ImagePicker();
+
+    final XFile? image = await _picker.pickImage(
+      source: ImageSource.camera, // Ganti dengan ImageSource.gallery jika ingin memilih dari galeri
+    );
+
+    if (image != null) {
+      // Lakukan sesuatu dengan gambar yang dipilih, misalnya menyimpannya atau menampilkan di UI
+      // Tambahkan logika sesuai kebutuhan Anda
+    }
+  }
 
   @override
   void initState() {
@@ -121,7 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         if(isSignedIn)
                           IconButton(
-                            onPressed: (){},
+                            onPressed: _pickImage,
                             icon: Icon(Icons.camera_alt, color: Colors.deepPurple[50],),),
                       ],
                     ),
