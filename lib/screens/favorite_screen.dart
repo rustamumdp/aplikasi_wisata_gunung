@@ -30,14 +30,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
   void initState() {
     super.initState();
-    // Assume you have a function to get the list of favorite mountains
     loadFavoriteMountains();
   }
 
   Future<void> loadFavoriteMountains() async {
-    // Replace this with your actual logic to load favorite mountains
-    // For demonstration, we are using a sample list of favorite mountains
-    //List<Gunung> favorites = gunungList.where((mountain) => mountain.isFavorite).toList();
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // Mengambil daftar gunung favorit dari SharedPreferences
@@ -51,8 +47,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     prefs.setStringList('favoriteMountainNames', favoriteMountainNames);
 
     // Memuat ulang daftar gunung favorit
-    //await loadFavoriteMountains();
-
     // Menyaring gunung yang sesuai dengan daftar favorit
     List<Gunung> favorites = gunungList
         .where((mountain) => favoriteMountainNames.contains(mountain.name))
@@ -100,10 +94,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 Gunung gunung = favoriteMountains[index];
                 return GestureDetector(
                   onTap: () {
-                    // Handle when a favorite mountain is tapped
                   },
                   onLongPress: () {
-                    // Remove from favorites when long-pressed
                     _removeFromFavorites(gunung);
                   },
                   child: ItemCard(gunung: gunung),
