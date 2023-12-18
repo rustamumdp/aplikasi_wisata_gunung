@@ -56,6 +56,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         userName = decryptedUserName;
       });
 
+      // Mengambil daftar gunung favorit dari SharedPreferences
+      List<String>? favoriteMountainNames =
+          prefs.getStringList('favoriteMountainNames') ?? [];
+
+      // Menetapkan jumlah gunung favorit
+      setState(() {
+        favoriteGunungCount = favoriteMountainNames.length;
+      });
+
       // Anda perlu mengimplementasikan logika untuk mengambil dan menetapkan favoriteGunungCount
       // Ini dapat berdasarkan data favorit pengguna yang disimpan selama penggunaan aplikasi.
     }

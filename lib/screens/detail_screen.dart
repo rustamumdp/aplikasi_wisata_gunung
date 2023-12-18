@@ -35,52 +35,55 @@ class _DetailScreenState extends State<DetailScreen> {
   }
 
   Future<void> loadFavoriteMountains() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool favoriteStatus = prefs.getBool('favorite_${widget.gunung.name}') ?? false;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    setState(() {
-      isFavorite = favoriteStatus;
+  // Mengambil daftar gunung favorit dari SharedPreferences
+  List<String>? favoriteMountainNames =
+      prefs.getStringList('favoriteMountainNames') ?? [];
+
+  // Periksa apakah gunung saat ini ada dalam daftar favorit
+  bool isCurrentlyFavorite = favoriteMountainNames.contains(widget.gunung.name);
+
+  setState(() {
+    isFavorite = isCurrentlyFavorite;
+  });
+}
+
+
+  Future<void> _toggleFavorite() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  // memeriksa apakah pengguna sudah sign in
+  if (!isSignedIn) {
+    // jika belum sign in, arahkan ke halaman sign in
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.pushReplacementNamed(context, '/signin');
     });
+    return;
   }
 
-  Future<void> _toggleFavorite() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    // memeriksa apakah pengguna sudah sign in
-    if (!isSignedIn) {
-      // jika belum sign in, arahkan ke halaman sign in
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.pushReplacementNamed(context, '/signin');
-      });
-      return;
-    }
-    // bool favoriteStatus = !isFavorite;
-    // prefs.setBool('favorite_${widget.gunung.name}', favoriteStatus);
-    //
-    // setState(() {
-    //   isFavorite = favoriteStatus;
-    // });
+  // Mengambil daftar gunung favorit dari SharedPreferences
+  List<String>? favoriteMountainNames =
+      prefs.getStringList('favoriteMountainNames') ?? [];
 
-    // Mengambil daftar gunung favorit dari SharedPreferences
-    List<String>? favoriteMountainNames =
-        prefs.getStringList('favoriteMountainNames') ?? [];
+  bool favoriteStatus = !isFavorite;
 
-    bool favoriteStatus = !isFavorite;
-
-    if (favoriteStatus) {
-      // Jika gunung ditambahkan ke favorit, tambahkan ke daftar
-      favoriteMountainNames.add(widget.gunung.name);
-    } else {
-      // Jika gunung dihapus dari favorit, hapus dari daftar
-      favoriteMountainNames.remove(widget.gunung.name);
-    }
-
-    // Simpan daftar gunung favorit ke SharedPreferences
-    prefs.setStringList('favoriteMountainNames', favoriteMountainNames);
-
-    setState(() {
-      isFavorite = favoriteStatus;
-    });
+  if (favoriteStatus) {
+    // Jika gunung ditambahkan ke favorit, tambahkan ke daftar
+    favoriteMountainNames.add(widget.gunung.name);
+  } else {
+    // Jika gunung dihapus dari favorit, hapus dari daftar
+    favoriteMountainNames.remove(widget.gunung.name);
   }
+
+  // Simpan daftar gunung favorit ke SharedPreferences
+  prefs.setStringList('favoriteMountainNames', favoriteMountainNames);
+
+  setState(() {
+    isFavorite = favoriteStatus;
+  });
+}
+
 
 
 

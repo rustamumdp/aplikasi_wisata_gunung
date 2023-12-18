@@ -63,6 +63,23 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     });
   }
 
+  Future<void> _removeFromFavorites(Gunung gunung) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Mengambil daftar gunung favorit dari SharedPreferences
+    List<String>? favoriteMountainNames =
+        prefs.getStringList('favoriteMountainNames') ?? [];
+
+    // Hapus gunung dari daftar favorit
+    favoriteMountainNames.remove(gunung.name);
+
+    // Simpan daftar gunung favorit yang diperbarui ke SharedPreferences
+    prefs.setStringList('favoriteMountainNames', favoriteMountainNames);
+
+    // Memuat ulang daftar gunung favorit
+    await loadFavoriteMountains();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,29 +88,28 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       ),
       body: favoriteMountains.isEmpty
           ? Center(
-        child: Text('Tidak ada gunung favorit.'),
-      )
-      //     : ListView.builder(
-      //   itemCount: favoriteMountains.length,
-      //   itemBuilder: (context, index) {
-      //     return ListTile(
-      //       title: Text(favoriteMountains[index].name),
-      //       subtitle: Text(favoriteMountains[index].location),
-      //       // Add more details or actions as needed
-      //     );
-      //   },
-      // ),
+              child: Text('Tidak ada gunung favorit.'),
+            )
           : GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-        ),
-        padding: EdgeInsets.all(8.0),
-        itemCount: favoriteMountains.length,
-        itemBuilder: (context, index) {
-          Gunung gunung = favoriteMountains[index];
-          return ItemCard(gunung: gunung);
-        },
-      ),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              padding: EdgeInsets.all(8.0),
+              itemCount: favoriteMountains.length,
+              itemBuilder: (context, index) {
+                Gunung gunung = favoriteMountains[index];
+                return GestureDetector(
+                  onTap: () {
+                    // Handle when a favorite mountain is tapped
+                  },
+                  onLongPress: () {
+                    // Remove from favorites when long-pressed
+                    _removeFromFavorites(gunung);
+                  },
+                  child: ItemCard(gunung: gunung),
+                );
+              },
+            ),
     );
   }
 }
