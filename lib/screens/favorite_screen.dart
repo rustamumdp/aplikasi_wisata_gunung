@@ -40,13 +40,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     List<String>? favoriteMountainNames =
         prefs.getStringList('favoriteMountainNames') ?? [];
 
-    // Menghapus gunung dari daftar favorite
-    //favoriteMountainNames.remove(gunungList);
-
     // Menyimpan kembali daftar favorit yang sudah diupdate
     prefs.setStringList('favoriteMountainNames', favoriteMountainNames);
 
-    // Memuat ulang daftar gunung favorit
     // Menyaring gunung yang sesuai dengan daftar favorit
     List<Gunung> favorites = gunungList
         .where((mountain) => favoriteMountainNames.contains(mountain.name))

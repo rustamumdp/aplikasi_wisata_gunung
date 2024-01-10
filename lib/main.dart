@@ -15,9 +15,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // tes
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -111,15 +109,6 @@ class _MainScreenState extends State<MainScreen> {
           showUnselectedLabels: true,
         ),
       ),
-      // TODO : 4. Buat data dan child dari theme
     );
-
   }
 }
-
-// class ScreenArguments {
-//   final String title;
-//   final String message;
-//
-//   ScreenArguments(this.title, this.message);
-// }

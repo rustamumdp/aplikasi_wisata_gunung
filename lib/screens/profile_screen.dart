@@ -28,7 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (image != null) {
       // Lakukan sesuatu dengan gambar yang dipilih, misalnya menyimpannya atau menampilkan di UI
-      // Tambahkan logika sesuai kebutuhan Anda
+      // Tambahkan logika sesuai kebutuhan
     }
   }
 
@@ -79,9 +79,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       setState(() {
         favoriteGunungCount = favoriteMountainNames.length;
       });
-
-      // Anda perlu mengimplementasikan logika untuk mengambil dan menetapkan favoriteGunungCount
-      // Ini dapat berdasarkan data favorit pengguna yang disimpan selama penggunaan aplikasi.
     }
   }
 

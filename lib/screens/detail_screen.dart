@@ -20,7 +20,7 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     super.initState();
-    // Memeriksa status sign-in dan daftar gunung favorit saat inisialisasi
+    // Memeriksa status sign-in dengan daftar gunung favorit saat di inisialisasi
     checkSignInStatus();
     loadFavoriteMountains();
   }
@@ -37,11 +37,11 @@ class _DetailScreenState extends State<DetailScreen> {
   Future<void> loadFavoriteMountains() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  // Mengambil daftar gunung favorit dari SharedPreferences
+  // Mengambil daftar gunung favorite dari SharedPreferences
   List<String>? favoriteMountainNames =
       prefs.getStringList('favoriteMountainNames') ?? [];
 
-  // Periksa apakah gunung saat ini ada dalam daftar favorit
+  // Cek apakah gunung saat ini masuk dalam daftar favorit
   bool isCurrentlyFavorite = favoriteMountainNames.contains(widget.gunung.name);
 
   setState(() {
@@ -53,16 +53,16 @@ class _DetailScreenState extends State<DetailScreen> {
   Future<void> _toggleFavorite() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  // memeriksa apakah pengguna sudah sign in
+  // Cek apakah pengguna sudah sign in atau belum
   if (!isSignedIn) {
-    // jika belum sign in, arahkan ke halaman sign in
+    // jika belum sign in, diarahkan pada halaman sign in
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Navigator.pushReplacementNamed(context, '/signin');
     });
     return;
   }
 
-  // Mengambil daftar gunung favorit dari SharedPreferences
+  // Ambil daftar gunung favorit dari SharedPreferences
   List<String>? favoriteMountainNames =
       prefs.getStringList('favoriteMountainNames') ?? [];
 
@@ -97,7 +97,7 @@ class _DetailScreenState extends State<DetailScreen> {
             //detailheader
             Stack(
               children:[
-                //image utama
+                //gambar utama
                 Hero(
                   tag: widget.gunung.imageAsset,
                   child: Padding(
@@ -135,7 +135,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
               ],
             ),
-            //detailinfo
+            //detailinfogunung
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -207,7 +207,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   SizedBox(height: 16,),
                   Container(
-                    height: 200,  // Ubah tinggi container sesuai kebutuhan Anda
+                    height: 200,  // Mengubah tinggi container sesuai kebutuhan
                     child: SingleChildScrollView(  // Widget untuk memungkinkan scrolling
                       child: Text(
                         widget.gunung.description,
@@ -221,7 +221,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 ],
               ),
             ),
-            //detail gallery
+            //detail galeri
             Padding(
               padding: const EdgeInsets.all(15),
               child: Column(
